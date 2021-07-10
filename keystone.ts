@@ -36,8 +36,9 @@ const session = statelessSessions({
 export default withAuth(
   config({
     db: {
-      adapter: 'prisma_postgresql',
-      url: process.env.DATABASE_URL || 'postgres://localhost/abcd',
+      // @ts-ignore
+      provider: 'mongodb',
+      url: process.env.DATABASE_URL || 'mongodb://localhost:27017/ksmongo',
     },
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,

@@ -54,7 +54,7 @@ export const lists = createSchema({
           cardFields: ['name', 'email'],
           inlineEdit: { fields: ['name', 'email'] },
           linkToItem: true,
-          inlineCreate: { fields: ['name', 'email'] },
+          inlineCreate: { fields: ['name', 'email', 'password'] },
         },
       }),
       tags: relationship({

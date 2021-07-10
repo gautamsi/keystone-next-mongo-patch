@@ -1,0 +1,165 @@
+diff --git a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.dev.js b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.dev.js
+index 718a202..387b5b8 100644
+--- a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.dev.js
++++ b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.dev.js
+@@ -258,7 +258,7 @@ function printScalarDefaultValue(defaultValue) {
+   }
+ 
+   if (defaultValue.kind === 'dbgenerated') {
+-    return `dbgenerated(${JSON.stringify(defaultValue.value)})`;
++    return `dbgenerated(${defaultValue.value ? JSON.stringify(defaultValue.value) : ''})`;
+   }
+ 
+   assertNever(defaultValue);
+@@ -375,6 +375,7 @@ function printPrismaSchema(lists, provider, clientDir) {
+ 
+ generator client {
+   provider = "prisma-client-js"
++  previewFeatures = ["mongodb"]
+   output = "${clientDir}"
+ }
+ \n`;
+@@ -391,7 +392,7 @@ generator client {
+ 
+       if (fieldPath === 'id') {
+         assertDbFieldIsValidForIdField(listKey, field);
+-        prismaSchema += ' @id';
++        prismaSchema += ' @id @map("_id")';
+       }
+     }
+ 
+diff --git a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.prod.js b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.prod.js
+index 505bcb1..95fd04d 100644
+--- a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.prod.js
++++ b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.cjs.prod.js
+@@ -258,7 +258,7 @@ function printScalarDefaultValue(defaultValue) {
+   }
+ 
+   if (defaultValue.kind === 'dbgenerated') {
+-    return `dbgenerated(${JSON.stringify(defaultValue.value)})`;
++    return `dbgenerated(${defaultValue.value ? JSON.stringify(defaultValue.value) : ''})`;
+   }
+ 
+   assertNever(defaultValue);
+@@ -375,6 +375,7 @@ function printPrismaSchema(lists, provider, clientDir) {
+ 
+ generator client {
+   provider = "prisma-client-js"
++  previewFeatures = ["mongodb"]
+   output = "${clientDir}"
+ }
+ \n`;
+@@ -391,7 +392,7 @@ generator client {
+ 
+       if (fieldPath === 'id') {
+         assertDbFieldIsValidForIdField(listKey, field);
+-        prismaSchema += ' @id';
++        prismaSchema += ' @id @map("_id")';
+       }
+     }
+ 
+diff --git a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.esm.js b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.esm.js
+index 2c0c6a4..3039476 100644
+--- a/node_modules/@keystone-next/keystone/artifacts/dist/keystone.esm.js
++++ b/node_modules/@keystone-next/keystone/artifacts/dist/keystone.esm.js
+@@ -228,7 +228,7 @@ function printScalarDefaultValue(defaultValue) {
+   }
+ 
+   if (defaultValue.kind === 'dbgenerated') {
+-    return `dbgenerated(${JSON.stringify(defaultValue.value)})`;
++    return `dbgenerated(${defaultValue.value ? JSON.stringify(defaultValue.value) : ''})`;
+   }
+ 
+   assertNever(defaultValue);
+@@ -345,6 +345,7 @@ function printPrismaSchema(lists, provider, clientDir) {
+ 
+ generator client {
+   provider = "prisma-client-js"
++  previewFeatures = ["mongodb"]
+   output = "${clientDir}"
+ }
+ \n`;
+@@ -361,7 +362,7 @@ generator client {
+ 
+       if (fieldPath === 'id') {
+         assertDbFieldIsValidForIdField(listKey, field);
+-        prismaSchema += ' @id';
++        prismaSchema += ' @id @map("_id")';
+       }
+     }
+ 
+diff --git a/node_modules/@keystone-next/keystone/dist/createSystem-4d7bedd5.cjs.prod.js b/node_modules/@keystone-next/keystone/dist/createSystem-4d7bedd5.cjs.prod.js
+index 2f9b63f..6c9159f 100644
+--- a/node_modules/@keystone-next/keystone/dist/createSystem-4d7bedd5.cjs.prod.js
++++ b/node_modules/@keystone-next/keystone/dist/createSystem-4d7bedd5.cjs.prod.js
+@@ -4518,6 +4518,8 @@ function getDBProvider(db) {
+     return 'postgresql';
+   } else if (db.adapter === 'prisma_sqlite' || db.provider === 'sqlite') {
+     return 'sqlite';
++  } else if (db.provider === 'mongodb') {
++    return 'mongodb';
+   } else {
+     throw new Error('Invalid db configuration. Please specify db.provider as either "sqlite" or "postgresql"');
+   }
+diff --git a/node_modules/@keystone-next/keystone/dist/createSystem-547cf0f3.cjs.dev.js b/node_modules/@keystone-next/keystone/dist/createSystem-547cf0f3.cjs.dev.js
+index be51abf..110506c 100644
+--- a/node_modules/@keystone-next/keystone/dist/createSystem-547cf0f3.cjs.dev.js
++++ b/node_modules/@keystone-next/keystone/dist/createSystem-547cf0f3.cjs.dev.js
+@@ -4518,6 +4518,8 @@ function getDBProvider(db) {
+     return 'postgresql';
+   } else if (db.adapter === 'prisma_sqlite' || db.provider === 'sqlite') {
+     return 'sqlite';
++  } else if (db.provider === 'mongodb') {
++    return 'mongodb';
+   } else {
+     throw new Error('Invalid db configuration. Please specify db.provider as either "sqlite" or "postgresql"');
+   }
+diff --git a/node_modules/@keystone-next/keystone/dist/createSystem-e5cd488b.esm.js b/node_modules/@keystone-next/keystone/dist/createSystem-e5cd488b.esm.js
+index de92da0..0dcedce 100644
+--- a/node_modules/@keystone-next/keystone/dist/createSystem-e5cd488b.esm.js
++++ b/node_modules/@keystone-next/keystone/dist/createSystem-e5cd488b.esm.js
+@@ -4482,6 +4482,8 @@ function getDBProvider(db) {
+     return 'postgresql';
+   } else if (db.adapter === 'prisma_sqlite' || db.provider === 'sqlite') {
+     return 'sqlite';
++  } else if (db.provider === 'mongodb') {
++    return 'mongodb';
+   } else {
+     throw new Error('Invalid db configuration. Please specify db.provider as either "sqlite" or "postgresql"');
+   }
+diff --git a/node_modules/@keystone-next/keystone/dist/migrations-1693ad1d.cjs.dev.js b/node_modules/@keystone-next/keystone/dist/migrations-1693ad1d.cjs.dev.js
+index b24df28..60b0717 100644
+--- a/node_modules/@keystone-next/keystone/dist/migrations-1693ad1d.cjs.dev.js
++++ b/node_modules/@keystone-next/keystone/dist/migrations-1693ad1d.cjs.dev.js
+@@ -48,6 +48,7 @@ async function withMigrate(dbUrl, schemaPath, cb) {
+ }
+ 
+ async function pushPrismaSchemaToDatabase(dbUrl, schema, schemaPath, shouldDropDatabase = false) {
++  return;
+   let before = Date.now();
+   let migration = await withMigrate(dbUrl, schemaPath, async migrate => {
+     if (shouldDropDatabase) {
+diff --git a/node_modules/@keystone-next/keystone/dist/migrations-292e6158.esm.js b/node_modules/@keystone-next/keystone/dist/migrations-292e6158.esm.js
+index c157d4e..3ebcbf7 100644
+--- a/node_modules/@keystone-next/keystone/dist/migrations-292e6158.esm.js
++++ b/node_modules/@keystone-next/keystone/dist/migrations-292e6158.esm.js
+@@ -40,6 +40,7 @@ async function withMigrate(dbUrl, schemaPath, cb) {
+ }
+ 
+ async function pushPrismaSchemaToDatabase(dbUrl, schema, schemaPath, shouldDropDatabase = false) {
++  return;
+   let before = Date.now();
+   let migration = await withMigrate(dbUrl, schemaPath, async migrate => {
+     if (shouldDropDatabase) {
+diff --git a/node_modules/@keystone-next/keystone/dist/migrations-e08cf5b9.cjs.prod.js b/node_modules/@keystone-next/keystone/dist/migrations-e08cf5b9.cjs.prod.js
+index 21b7f9a..6142596 100644
+--- a/node_modules/@keystone-next/keystone/dist/migrations-e08cf5b9.cjs.prod.js
++++ b/node_modules/@keystone-next/keystone/dist/migrations-e08cf5b9.cjs.prod.js
+@@ -48,6 +48,7 @@ async function withMigrate(dbUrl, schemaPath, cb) {
+ }
+ 
+ async function pushPrismaSchemaToDatabase(dbUrl, schema, schemaPath, shouldDropDatabase = false) {
++  return;
+   let before = Date.now();
+   let migration = await withMigrate(dbUrl, schemaPath, async migrate => {
+     if (shouldDropDatabase) {
